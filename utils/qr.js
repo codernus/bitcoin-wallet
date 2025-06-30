@@ -2,24 +2,21 @@ const fs = require("fs");
 const path = require("path");
 const qrcode = require("qrcode");
 
-function ensureDir(dir) {
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
+function ensureDir(dirPath) {
+  if (!fs.existsSync(dirPath)) {
+    fs.mkdirSync(dirPath, { recursive: true });
   }
 }
 
 async function saveQRCode(data, filename) {
-  const outputDir = path.join(__dirname, "..", "wallets");
-  ensureDir(outputDir);
-
-  const filePath = path.join(outputDir, `${filename}.png`);
-
+  const imagesDir = path.join(__dirname, "..", "images");
+  ensureDir(imagesDir);
+  const filePath = path.join(imagesDir, `${filename}.png`);
   await qrcode.toFile(filePath, data, {
     errorCorrectionLevel: "H",
     type: "png",
     width: 400,
   });
-
   return filePath;
 }
 
